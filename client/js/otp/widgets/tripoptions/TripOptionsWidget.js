@@ -799,93 +799,93 @@ otp.widgets.tripoptions.PreferredRoutes =
 
 //** BannedRoutes **//
 
-otp.widgets.tripoptions.BannedRoutes =
-    otp.Class(otp.widgets.tripoptions.TripOptionsWidgetControl, {
+// otp.widgets.tripoptions.BannedRoutes =
+//     otp.Class(otp.widgets.tripoptions.TripOptionsWidgetControl, {
 
-    id           :  null,
+//     id           :  null,
 
-    selectorWidget : null,
+//     selectorWidget : null,
 
-    initialize : function(tripWidget) {
-        var this_ = this;
-        otp.widgets.tripoptions.TripOptionsWidgetControl.prototype.initialize.apply(this, arguments);
-        this.id = tripWidget.id+"-bannedRoutes";
+//     initialize : function(tripWidget) {
+//         var this_ = this;
+//         otp.widgets.tripoptions.TripOptionsWidgetControl.prototype.initialize.apply(this, arguments);
+//         this.id = tripWidget.id+"-bannedRoutes";
 
-        var html = '<div class="notDraggable">';
-        //TRANSLATORS: buton edit Banned public transport routes
-        var html = '<div style="float:right; font-size: 12px;"><button id="'+this.id+'-button">' + _tr("Edit") + '…</button></div>';
-        //TRANSLATORS: label Banned public transport Routes: (routes/None)
-        //(Routes you don't want to take)
-        html += _tr("Banned routes") + ': <span id="'+this.id+'-list">('+_tr("None")+')</span>';
-        html += '<div style="clear:both;"></div></div>';
+//         var html = '<div class="notDraggable">';
+//         //TRANSLATORS: buton edit Banned public transport routes
+//         var html = '<div style="float:right; font-size: 12px;"><button id="'+this.id+'-button">' + _tr("Edit") + '…</button></div>';
+//         //TRANSLATORS: label Banned public transport Routes: (routes/None)
+//         //(Routes you don't want to take)
+//         html += _tr("Banned routes") + ': <span id="'+this.id+'-list">('+_tr("None")+')</span>';
+//         html += '<div style="clear:both;"></div></div>';
 
-        $(html).appendTo(this.$());
+//         $(html).appendTo(this.$());
 
-        //TRANSLATORS: Widget title
-        this.selectorWidget = new otp.widgets.RoutesSelectorWidget(this.id+"-selectorWidget", this, _tr("Banned routes"));
-    },
+//         //TRANSLATORS: Widget title
+//         this.selectorWidget = new otp.widgets.RoutesSelectorWidget(this.id+"-selectorWidget", this, _tr("Banned routes"));
+//     },
 
-    doAfterLayout : function() {
-        var this_ = this;
-        $('#'+this.id+'-button').button().click(function() {
-            this_.selectorWidget.updateRouteList();
-            this_.selectorWidget.show();
-            if(this_.selectorWidget.isMinimized) this_.selectorWidget.unminimize();
-            this_.selectorWidget.bringToFront();
-        });
-    },
+//     doAfterLayout : function() {
+//         var this_ = this;
+//         $('#'+this.id+'-button').button().click(function() {
+//             this_.selectorWidget.updateRouteList();
+//             this_.selectorWidget.show();
+//             if(this_.selectorWidget.isMinimized) this_.selectorWidget.unminimize();
+//             this_.selectorWidget.bringToFront();
+//         });
+//     },
 
-    setRoutes : function(paramStr, displayStr) {
-        this.tripWidget.inputChanged({
-            bannedRoutes : paramStr,
-        });
-        $('#'+this.id+'-list').html(displayStr);
-    },
+//     setRoutes : function(paramStr, displayStr) {
+//         this.tripWidget.inputChanged({
+//             bannedRoutes : paramStr,
+//         });
+//         $('#'+this.id+'-list').html(displayStr);
+//     },
 
-    restorePlan : function(planData) {
-        if(planData.queryParams.bannedRoutes) {
-            var this_ = this;
+//     restorePlan : function(planData) {
+//         if(planData.queryParams.bannedRoutes) {
+//             var this_ = this;
 
-            var restoredIds = [];
-            var bannedRoutesArr = planData.queryParams.bannedRoutes.split(',');
+//             var restoredIds = [];
+//             var bannedRoutesArr = planData.queryParams.bannedRoutes.split(',');
 
-            // convert the API's agency_name_id format to standard agency_id
-            for(var i=0; i < bannedRoutesArr.length; i++) {
-                var apiIdArr = bannedRoutesArr[i].split("_");
-                var agencyAndId = apiIdArr[0] + "_" + apiIdArr.pop();
-                restoredIds.push(agencyAndId);
-            }
+//             // convert the API's agency_name_id format to standard agency_id
+//             for(var i=0; i < bannedRoutesArr.length; i++) {
+//                 var apiIdArr = bannedRoutesArr[i].split("_");
+//                 var agencyAndId = apiIdArr[0] + "_" + apiIdArr.pop();
+//                 restoredIds.push(agencyAndId);
+//             }
 
-            this.selectorWidget.restoredRouteIds = restoredIds;
-            if(this.selectorWidget.initializedRoutes) this.selectorWidget.restoreSelected();
+//             this.selectorWidget.restoredRouteIds = restoredIds;
+//             if(this.selectorWidget.initializedRoutes) this.selectorWidget.restoreSelected();
 
-            this.tripWidget.module.bannedRoutes = planData.queryParams.bannedRoutes;
+//             this.tripWidget.module.bannedRoutes = planData.queryParams.bannedRoutes;
 
-            // resolve the IDs to user-friendly names
-            var indexApi = this.tripWidget.module.webapp.indexApi;
-            indexApi.loadRoutes(this, function() {
-                var routeNames = [];
-                for(var i = 0; i < restoredIds.length; i++) {
-                    var route = indexApi.routes[restoredIds[i]].routeData;
-                    routeNames.push(route.shortName || route.longName);
-                }
-                $('#'+this_.id+'-list').html(routeNames.join(', '));
-            });
+//             // resolve the IDs to user-friendly names
+//             var indexApi = this.tripWidget.module.webapp.indexApi;
+//             indexApi.loadRoutes(this, function() {
+//                 var routeNames = [];
+//                 for(var i = 0; i < restoredIds.length; i++) {
+//                     var route = indexApi.routes[restoredIds[i]].routeData;
+//                     routeNames.push(route.shortName || route.longName);
+//                 }
+//                 $('#'+this_.id+'-list').html(routeNames.join(', '));
+//             });
 
-        }
-        else { // none specified
-            this.selectorWidget.clearSelected();
-            this.selectorWidget.restoredRouteIds = [];
-            $('#'+this.id+'-list').html('('+_tr("None")+')');
-            this.tripWidget.module.bannedRoutes = null;
-        }
-    },
+//         }
+//         else { // none specified
+//             this.selectorWidget.clearSelected();
+//             this.selectorWidget.restoredRouteIds = [];
+//             $('#'+this.id+'-list').html('('+_tr("None")+')');
+//             this.tripWidget.module.bannedRoutes = null;
+//         }
+//     },
 
-    isApplicableForMode : function(mode) {
-        return otp.util.Itin.includesTransit(mode);
-    }
+//     isApplicableForMode : function(mode) {
+//         return otp.util.Itin.includesTransit(mode);
+//     }
 
-});
+// });
 
 
 //** BikeTriangle **//
