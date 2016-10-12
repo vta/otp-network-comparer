@@ -567,7 +567,14 @@ otp.modules.planner.PlannerModule =
             }
             //FIXME: CAR is missing
         }
-        if (otp.config.zoomToFitResults) this.webapp.map.lmap.fitBounds(itin.getBoundsArray());
+        if (otp.config.zoomToFitResults){
+            var p = 0.01
+            var padded_bounds = [
+                [itin.getBoundsArray()[0][0]-p, itin.getBoundsArray()[0][1]-p],
+                [itin.getBoundsArray()[1][0]+p, itin.getBoundsArray()[1][1]+p]
+            ]
+            this.webapp.map.lmap.fitBounds(padded_bounds);
+        }
     },
 
     highlightLeg : function(leg) {
