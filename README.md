@@ -23,6 +23,10 @@ Pull updated maps with:
 ```
 wget  https://s3.amazonaws.com/metro-extracts.mapzen.com/san-francisco-bay_california.osm.pbf
 ```
+Here is a static backup if mapzen clears their s3 buckets:
+```
+wget https://s3-us-west-2.amazonaws.com/gis-busstops-inventory/osm-network-1-23-18/san-francisco-bay_california.osm.pbf
+```
 
 Pull the java file with:
 ```
